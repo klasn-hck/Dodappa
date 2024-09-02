@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proposal</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            margin-top: 50px;
+        }
+        .button {
+            padding: 15px 25px;
+            font-size: 18px;
+            border: none;
+            cursor: pointer;
+            margin: 10px;
+            border-radius: 5px;
+        }
+        .yes-button {
+            background-color: #28a745;
+            color: white;
+        }
+        .no-button {
+            background-color: #dc3545;
+            color: white;
+        }
+        .no-button:disabled {
+            cursor: not-allowed;
+            opacity: 0.5;
+        }
+        .message {
+            font-size: 20px;
+            margin-top: 20px;
+            color: #dc3545;
+        }
+        .move {
+            position: absolute;
+            transition: all 0.5s ease;
+        }
+        .move-away {
+            top: 100px;
+            left: 100px;
+        }
+        .video-container {
+            display: none;
+            margin-top: 20px;
+        }
+        video {
+            width: 80%;
+            max-width: 600px;
+            margin: 10px auto;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Propose to Chapathi</h1>
+        <p>Chapathi, will you marry me?</p>
+        <button class="button yes-button" onclick="acceptProposal()">Yes</button>
+        <button class="button no-button move" id="noButton" onclick="declineProposal()">No</button>
+        <p id="message" class="message"></p>
+        
+        <div class="video-container" id="videoContainer">
+            <video id="video1" src="4fda6421-08f1-4889-9c87-363f11796b8f (1).mp4" controls></video>
+            <video id="video2" src="69ccb7a7-0e93-4f97-b2c1-b44a849eef6d.mp4" controls></video>
+            <video id="video3" src="ff5c040c-ed5b-497d-9517-b3f51e3e8677.mp4" controls></video>
+        </div>
+    </div>
+
+    <script>
+        let noClicked = false;
+        let currentVideoIndex = 0;
+        const videos = document.querySelectorAll('video');
+        
+        function acceptProposal() {
+            document.getElementById("message").textContent = "Yay! Chapathi said yes!";
+            document.getElementById("noButton").style.display = "none";
+            document.getElementById("videoContainer").style.display = "block";
+            playNextVideo();
+        }
+
+        function declineProposal() {
+            if (!noClicked) {
+                document.getElementById("message").textContent = "Please Chapathi, nanna love maadu!";
+                noClicked = true;
+                moveNoButton();
+            }
+        }
+
+        function moveNoButton() {
+            const noButton = document.getElementById("noButton");
+            noButton.classList.add('move-away');
+            noButton.addEventListener('mouseover', moveButton);
+        }
+
+        function moveButton() {
+            const noButton = document.getElementById("noButton");
+            const randomX = Math.random() * (window.innerWidth - noButton.offsetWidth);
+            const randomY = Math.random() * (window.innerHeight - noButton.offsetHeight);
+            noButton.style.top = randomY + 'px';
+            noButton.style.left = randomX + 'px';
+        }
+
+        function playNextVideo() {
+            if (currentVideoIndex < videos.length) {
+                videos[currentVideoIndex].play();
+                videos[currentVideoIndex].addEventListener('ended', function() {
+                    currentVideoIndex++;
+                    playNextVideo();
+                });
+            }
+        }
+    </script>
+</body>
+</html>
